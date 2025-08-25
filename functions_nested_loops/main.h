@@ -1,6 +1,1 @@
-#ifndef MAIN_H
-#define MAIN_H
-
-int _putchar(char c);
-
-#endif /* MAIN_H */
+gcc -Wall -pedantic -Werror -Wextra -std=gnu89 _putchar.c 0-putchar.c -o 0-putchar
