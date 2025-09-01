@@ -1,66 +1,45 @@
-#include <stdio.h>
 #include "main.h"
-#include <string.h>
+#include <limits.h>
 
 /**
- * power - prints power
+ * _atoi - Converts a string to an integer
+ * @s: The string to convert
  *
- * @a: - int
- * @b: - int
- *
- * My function
- *
- * Return: Always a or 1 (Success)
+ * Return: The converted integer, or 0 if no numbers found
  */
-
-int power(int a, int b)
-{
-	int i;
-	int j = a;
-
-	if (b == 0)
-		return (1);
-	for (i = 1; i < b; i++)
-	{
-		a *= j;
-	}
-	return (a);
-}
-
-/**
- * _atoi - convert a string to an integer
- *
- * @s: pointer to an char
- *
- * Return: integer
- */
-
 int _atoi(char *s)
 {
-	int i = 0;
-	int k = 0;
-	int len = strlen(s);
-	int moins = 0;
-	unsigned int num = 0;
+	int i = 0, sign = 1, num_started = 0;
+	int result = 0;
 
-	if (s[0] == '\0')
-		return (0);
-	while (((s[i] < '0') || (s[i] > '9')) & (s[i] != '\0'))
+	while (s[i] != '\0')
 	{
 		if (s[i] == '-')
-			moins++;
+			sign *= -1;
+		else if (s[i] == '+')
+			;
+		else if (s[i] >= '0' && s[i] <= '9')
+		{
+			num_started = 1;
+
+			if (sign == -1)
+			{
+				if (result < (INT_MIN + (s[i] - '0')) / 10)
+					return (INT_MIN);
+				result = result * 10 - (s[i] - '0');
+			}
+			else
+			{
+				if (result > (INT_MAX - (s[i] - '0')) / 10)
+					return (INT_MAX);
+				result = result * 10 + (s[i] - '0');
+			}
+		}
+		else if (num_started)
+			break;
+
 		i++;
 	}
-	if (i == len)
-		return (0);
-	while ((s[i + k] >= '0') & (s[i + k] <= '9'))
-		k++;
-	for (; k > 0; k--)
-	{
-		num += (s[i] - '0') * power(10, (k - 1));
-		i++;
-	}
-	if ((moins % 2) == 0)
-		return (num);
-	return (num *= (-1));
+
+	return (result);
 }
